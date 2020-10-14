@@ -159,6 +159,39 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/purchases',
+    component: Layout,
+    redirect: '/purchases/pay',
+    name: 'purchases',
+    meta: { title: '进货管理', icon: ' el-icon-shopping-cart-full' },
+    children: [
+      {
+        path: 'pay',
+        name: 'pay',
+        component: () => import('@/views/purchases/pay'),
+        meta: { title: '付款单', icon: 'el-icon-user-solid' }
+      },
+      {
+        path: 'change',
+        name: 'change',
+        component: () => import('@/views/purchases/change'),
+        meta: { title: '换货单', icon: 'el-icon-s-help' }
+      },
+      {
+        path: 'purchase',
+        name: 'purchase',
+        component: () => import('@/views/purchases/purchase'),
+        meta: { title: '进货单', icon: 'el-icon-s-goods' }
+      },
+      {
+        path: 'return',
+        name: 'return',
+        component: () => import('@/views/purchases/return'),
+        meta: { title: '退货单', icon: 'el-icon-warning' }
+      }
+    ]
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
