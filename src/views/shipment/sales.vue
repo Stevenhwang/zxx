@@ -5,11 +5,8 @@
         <el-form-item label="联系人" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="供应单位" :label-width="formLabelWidth">
-          <el-input v-model="form.address" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="材料名称" :label-width="formLabelWidth">
-          <el-input v-model="form.deatil" autocomplete="off" />
+        <el-form-item label="项目名称" :label-width="formLabelWidth">
+          <el-input v-model="form.project" autocomplete="off" />
         </el-form-item>
         <el-form-item label="单据编号" :label-width="formLabelWidth">
           <el-input v-model="form.docnum" autocomplete="off" />
@@ -25,6 +22,9 @@
         </el-form-item>
         <el-form-item label="金额" :label-width="formLabelWidth">
           <el-input v-model="form.amount" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="送货司机" :label-width="formLabelWidth">
+          <el-input v-model="form.driver" autocomplete="off" />
         </el-form-item>
         <el-form-item label="备注" :label-width="formLabelWidth">
           <el-input v-model="form.remarks" autocomplete="off" />
@@ -59,8 +59,8 @@
         v-if="!isDate"
         v-model="input"
         style="width:350px;"
-        clearable
         placeholder="请输入搜索内容"
+        clearable
       />
       <template v-if="isDate">
         <el-date-picker
@@ -77,6 +77,8 @@
       <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         导出
       </el-button>
+      <el-button type="primary" :loading="templateloadLoading" @click="templateDownload"><i class="el-icon-download" />模板</el-button>
+      <el-button type="primary" :loading="uploadLoading"><i class="el-icon-upload el-icon--right" />上传</el-button>
       <el-button
         type="primary"
         icon="el-icon-edit"
@@ -99,13 +101,8 @@
         width="80"
       />
       <el-table-column
-        prop="address"
-        label="供应单位"
-        width="200"
-      />
-      <el-table-column
-        prop="deatil"
-        label="材料名称"
+        prop="project"
+        label="项目名称"
         width="200"
       />
       <el-table-column
@@ -133,8 +130,13 @@
         label="金额"
       />
       <el-table-column
+        prop="driver"
+        label="送货司机"
+      />
+      <el-table-column
         prop="remarks"
         label="备注"
+        width="200"
       />
       <el-table-column
         fixed="right"
@@ -157,9 +159,11 @@
 
 <script>
 import { parseTime } from '@/utils'
+import { export_json_to_excel } from '@/vendor/Export2Excel'
 export default {
   data() {
     return {
+      tHeader: ['日期', '联系人', '供应单位', '单据编号', '材料名称', '单价', '数量', '单位', '金额', '备注'],
       isDate: false,
       value1: '',
       options: [{
@@ -168,16 +172,16 @@ export default {
       }, {
         value: 'person',
         label: '联系人'
-      }, {
-        value: 'supply',
-        label: '供应单位'
       },
       {
         value: 'docnum',
         label: '单据编号'
       }, {
-        value: 'material',
-        label: '材料名称'
+        value: 'project',
+        label: '项目名称'
+      }, {
+        value: 'driver',
+        label: '送货司机'
       }],
       value: '',
       downloadLoading: false,
@@ -189,19 +193,20 @@ export default {
       },
       form: {
         name: '',
-        address: '',
-        detail: '',
+        project: '',
+        quantity: '',
+        price: '',
+        driver: '',
         amount: '',
         date: '',
         remarks: '',
         unit: '',
-        quantity: '',
-        price: '',
         docnum: ''
 
       },
       formLabelWidth: '100px',
       dialogFormVisible: false,
+      templateloadLoading: false,
       tableData: [{
         date: '2016-05-02',
         name: '王小虎',
@@ -252,14 +257,14 @@ export default {
     resetForm() {
       this.form = {
         name: '',
-        address: '',
-        detail: '',
+        project: '',
+        quantity: '',
+        price: '',
+        driver: '',
         amount: '',
         date: '',
         remarks: '',
         unit: '',
-        quantity: '',
-        price: '',
         docnum: ''
       }
     },
@@ -276,17 +281,24 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['日期', '联系人', '供应单位', '单据编号', '材料名称', '单价', '数量', '单位', '金额', '备注']
-        const filterVal = ['date', 'name', 'address', 'docnum', 'detail', 'price', 'quantity', 'unit', 'amount', 'remarks']
-        const data = this.formatJson(filterVal)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: 'table-list'
-        })
-        this.downloadLoading = false
+      const filterVal = ['date', 'docnum', 'name', 'project', 'price', 'quantity', 'unit', 'amount', 'driver', 'remarks']
+      const data = this.formatJson(filterVal)
+      export_json_to_excel({
+        header: this.tHeader,
+        data,
+        filename: 'table-list'
       })
+      this.downloadLoading = false
+    },
+    templateDownload() {
+      this.templateloadLoading = true
+      const data = []
+      export_json_to_excel({
+        header: this.tHeader,
+        data,
+        filename: '原材料模板'
+      })
+      this.templateloadLoading = false
     },
     formatJson(filterVal) {
       return this.tableData.map(v => filterVal.map(j => {

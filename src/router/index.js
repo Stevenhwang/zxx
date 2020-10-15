@@ -51,148 +51,93 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'el-icon-office-building' }
     }]
-  },
-
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        name: 'Menu2',
-        meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
   },
   {
     path: '/purchases',
     component: Layout,
     redirect: '/purchases/pay',
     name: 'purchases',
-    meta: { title: '进货管理', icon: ' el-icon-shopping-cart-full' },
+    meta: { title: '进货管理', icon: 'el-icon-shopping-cart-2' },
     children: [
       {
         path: 'pay',
         name: 'pay',
         component: () => import('@/views/purchases/pay'),
-        meta: { title: '付款单', icon: 'el-icon-user-solid' }
+        meta: { title: '原材料', icon: 'el-icon-receiving' }
       },
       {
         path: 'change',
         name: 'change',
         component: () => import('@/views/purchases/change'),
-        meta: { title: '换货单', icon: 'el-icon-s-help' }
-      },
+        meta: { title: '退换货', icon: 'el-icon-s-help' }
+      }
+    ]
+  },
+  {
+    path: '/shipment',
+    component: Layout,
+    redirect: '/shipment/sales',
+    name: 'shipment',
+    meta: { title: '出货管理', icon: 'el-icon-sold-out' },
+    children: [
       {
-        path: 'purchase',
-        name: 'purchase',
-        component: () => import('@/views/purchases/purchase'),
-        meta: { title: '进货单', icon: 'el-icon-s-goods' }
+        path: 'sales',
+        name: 'sales',
+        component: () => import('@/views/shipment/sales'),
+        meta: { title: '销售', icon: 'el-icon-coin' }
       },
       {
         path: 'return',
         name: 'return',
-        component: () => import('@/views/purchases/return'),
-        meta: { title: '退货单', icon: 'el-icon-warning' }
+        component: () => import('@/views/shipment/return'),
+        meta: { title: '退换货', icon: 'el-icon-s-help' }
       }
     ]
   },
-
+  {
+    path: '/moneyflow',
+    component: Layout,
+    redirect: '/moneyflow/payment',
+    name: 'moneyflow',
+    meta: { title: '钱流管理', icon: 'el-icon-wallet' },
+    children: [
+      {
+        path: 'payment',
+        name: 'payment',
+        component: () => import('@/views/moneyflow/payment'),
+        meta: { title: '付款', icon: 'el-icon-bank-card' }
+      },
+      {
+        path: 'respay',
+        name: 'respay',
+        component: () => import('@/views/moneyflow/respay'),
+        meta: { title: '收款', icon: 'el-icon-suitcase' }
+      }
+    ]
+  },
+  {
+    path: '/invoice',
+    component: Layout,
+    redirect: '/invoice/cancellation',
+    name: 'invoice',
+    meta: { title: '票据管理', icon: 'el-icon-money' },
+    children: [
+      {
+        path: 'cancellation',
+        name: 'cancellation',
+        component: () => import('@/views/invoice/cancellation'),
+        meta: { title: '销项票', icon: 'el-icon-notebook-1' }
+      },
+      {
+        path: 'entryticket',
+        name: 'entryticket',
+        component: () => import('@/views/invoice/entryticket'),
+        meta: { title: '进项票', icon: 'el-icon-notebook-2' }
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

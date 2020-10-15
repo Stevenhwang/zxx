@@ -2,29 +2,35 @@
   <el-container>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item label="联系人" :label-width="formLabelWidth">
+        <el-form-item label="经办人" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="供应单位" :label-width="formLabelWidth">
-          <el-input v-model="form.address" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="材料名称" :label-width="formLabelWidth">
-          <el-input v-model="form.deatil" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="单据编号" :label-width="formLabelWidth">
-          <el-input v-model="form.docnum" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="单价" :label-width="formLabelWidth">
-          <el-input v-model="form.price" autocomplete="off" />
+        <el-form-item label="联系人" :label-width="formLabelWidth">
+          <el-input v-model="form.person" autocomplete="off" />
         </el-form-item>
         <el-form-item label="数量" :label-width="formLabelWidth">
           <el-input v-model="form.quantity" autocomplete="off" />
         </el-form-item>
+        <el-form-item label="票号" :label-width="formLabelWidth">
+          <el-input v-model="form.number" autocomplete="off" />
+        </el-form-item>
         <el-form-item label="单位" :label-width="formLabelWidth">
           <el-input v-model="form.unit" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="金额" :label-width="formLabelWidth">
-          <el-input v-model="form.amount" autocomplete="off" />
+        <el-form-item label="货品名称" :label-width="formLabelWidth">
+          <el-input v-model="form.product" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="应收发票金额" :label-width="formLabelWidth">
+          <el-input v-model="form.should" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="已收发票金额" :label-width="formLabelWidth">
+          <el-input v-model="form.completed" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="未收发票金额" :label-width="formLabelWidth">
+          <el-input v-model="form.nodone" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="已冲抵发票金额" :label-width="formLabelWidth">
+          <el-input v-model="form.deduction" autocomplete="off" />
         </el-form-item>
         <el-form-item label="备注" :label-width="formLabelWidth">
           <el-input v-model="form.remarks" autocomplete="off" />
@@ -58,9 +64,9 @@
       <el-input
         v-if="!isDate"
         v-model="input"
-        style="width:350px;"
-        clearable
+        style="width:300px;"
         placeholder="请输入搜索内容"
+        clearable
       />
       <template v-if="isDate">
         <el-date-picker
@@ -94,47 +100,53 @@
         width="100"
       />
       <el-table-column
-        prop="name"
-        label="联系人"
-        width="80"
-      />
-      <el-table-column
-        prop="address"
-        label="供应单位"
+        prop="number"
+        label="票号"
         width="200"
       />
       <el-table-column
-        prop="deatil"
-        label="材料名称"
+        prop="product"
+        label="货品名称"
         width="200"
-      />
-      <el-table-column
-        prop="docnum"
-        label="单据编号"
-        width="200"
-      />
-      <el-table-column
-        prop="price"
-        label="单价"
-        width="80"
       />
       <el-table-column
         prop="quantity"
         label="数量"
-        width="80"
       />
       <el-table-column
         prop="unit"
         label="单位"
-        width="80"
+      />
+
+      <el-table-column
+        prop="should"
+        label="应收发票金额"
       />
       <el-table-column
-        prop="amount"
-        label="金额"
+        prop="completed"
+        label="已收发票金额"
+      />
+      <el-table-column
+        prop="nodone"
+        label="未收发票金额"
+      />
+      <el-table-column
+        prop="deduction"
+        label="已冲抵发票金额"
+      />
+      <el-table-column
+        prop="person"
+        label="联系人"
+      />
+      <el-table-column
+        prop="name"
+        label="经办人"
+        width="80"
       />
       <el-table-column
         prop="remarks"
         label="备注"
+        width="200"
       />
       <el-table-column
         fixed="right"
@@ -165,19 +177,20 @@ export default {
       options: [{
         value: 'date',
         label: '日期'
-      }, {
-        value: 'person',
-        label: '联系人'
-      }, {
-        value: 'supply',
-        label: '供应单位'
       },
       {
-        value: 'docnum',
-        label: '单据编号'
+        value: 'num',
+        label: '票号'
+      },
+      {
+        value: 'goods',
+        label: '货品名称'
       }, {
-        value: 'material',
-        label: '材料名称'
+        value: 'name',
+        label: '联系人'
+      }, {
+        value: 'person',
+        label: '经办人'
       }],
       value: '',
       downloadLoading: false,
@@ -189,16 +202,14 @@ export default {
       },
       form: {
         name: '',
-        address: '',
-        detail: '',
+        project: '',
+        punit: '',
+        collect: '',
         amount: '',
         date: '',
         remarks: '',
         unit: '',
-        quantity: '',
-        price: '',
-        docnum: ''
-
+        balance: ''
       },
       formLabelWidth: '100px',
       dialogFormVisible: false,
@@ -252,15 +263,14 @@ export default {
     resetForm() {
       this.form = {
         name: '',
-        address: '',
-        detail: '',
+        project: '',
+        balance: '',
+        collect: '',
         amount: '',
         date: '',
         remarks: '',
         unit: '',
-        quantity: '',
-        price: '',
-        docnum: ''
+        punit: ''
       }
     },
     handleCreate() {
@@ -277,8 +287,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['日期', '联系人', '供应单位', '单据编号', '材料名称', '单价', '数量', '单位', '金额', '备注']
-        const filterVal = ['date', 'name', 'address', 'docnum', 'detail', 'price', 'quantity', 'unit', 'amount', 'remarks']
+        const tHeader = ['日期', '经办人', '已冲抵发票金额', '货品名称', '应收发票金额', '已收发票金额', '未收发票金额', '票号', '数量', '单位', '联系人', '备注']
+        const filterVal = ['date', 'name', 'deduction', 'product', 'should', 'completed', 'nodone', 'number', 'quantity', 'unit', 'person', 'remarks']
         const data = this.formatJson(filterVal)
         excel.export_json_to_excel({
           header: tHeader,

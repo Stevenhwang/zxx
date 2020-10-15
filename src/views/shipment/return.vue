@@ -5,11 +5,8 @@
         <el-form-item label="联系人" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="供应单位" :label-width="formLabelWidth">
-          <el-input v-model="form.address" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="材料名称" :label-width="formLabelWidth">
-          <el-input v-model="form.deatil" autocomplete="off" />
+        <el-form-item label="项目名称" :label-width="formLabelWidth">
+          <el-input v-model="form.project" autocomplete="off" />
         </el-form-item>
         <el-form-item label="单据编号" :label-width="formLabelWidth">
           <el-input v-model="form.docnum" autocomplete="off" />
@@ -25,6 +22,9 @@
         </el-form-item>
         <el-form-item label="金额" :label-width="formLabelWidth">
           <el-input v-model="form.amount" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="送货司机" :label-width="formLabelWidth">
+          <el-input v-model="form.driver" autocomplete="off" />
         </el-form-item>
         <el-form-item label="备注" :label-width="formLabelWidth">
           <el-input v-model="form.remarks" autocomplete="off" />
@@ -58,9 +58,9 @@
       <el-input
         v-if="!isDate"
         v-model="input"
-        style="width:350px;"
-        clearable
+        style="width:350px"
         placeholder="请输入搜索内容"
+        clearable
       />
       <template v-if="isDate">
         <el-date-picker
@@ -99,13 +99,8 @@
         width="80"
       />
       <el-table-column
-        prop="address"
-        label="供应单位"
-        width="200"
-      />
-      <el-table-column
-        prop="deatil"
-        label="材料名称"
+        prop="project"
+        label="项目名称"
         width="200"
       />
       <el-table-column
@@ -133,8 +128,13 @@
         label="金额"
       />
       <el-table-column
+        prop="driver"
+        label="送货司机"
+      />
+      <el-table-column
         prop="remarks"
         label="备注"
+        width="200"
       />
       <el-table-column
         fixed="right"
@@ -168,16 +168,16 @@ export default {
       }, {
         value: 'person',
         label: '联系人'
-      }, {
-        value: 'supply',
-        label: '供应单位'
       },
       {
         value: 'docnum',
         label: '单据编号'
       }, {
-        value: 'material',
-        label: '材料名称'
+        value: 'project',
+        label: '项目名称'
+      }, {
+        value: 'driver',
+        label: '送货司机'
       }],
       value: '',
       downloadLoading: false,
@@ -189,16 +189,15 @@ export default {
       },
       form: {
         name: '',
-        address: '',
-        detail: '',
+        project: '',
+        quantity: '',
+        price: '',
+        driver: '',
         amount: '',
         date: '',
         remarks: '',
         unit: '',
-        quantity: '',
-        price: '',
         docnum: ''
-
       },
       formLabelWidth: '100px',
       dialogFormVisible: false,
@@ -252,14 +251,14 @@ export default {
     resetForm() {
       this.form = {
         name: '',
-        address: '',
-        detail: '',
+        project: '',
+        quantity: '',
+        price: '',
+        driver: '',
         amount: '',
         date: '',
         remarks: '',
         unit: '',
-        quantity: '',
-        price: '',
         docnum: ''
       }
     },
@@ -277,8 +276,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['日期', '联系人', '供应单位', '单据编号', '材料名称', '单价', '数量', '单位', '金额', '备注']
-        const filterVal = ['date', 'name', 'address', 'docnum', 'detail', 'price', 'quantity', 'unit', 'amount', 'remarks']
+        const tHeader = ['日期', '联系人', '项目名称', '单据编号', '单价', '数量', '单位', '金额', '送货司机', '备注']
+        const filterVal = ['date', 'name', 'project', 'docnum ', 'price', 'quantity', 'unit', 'amount', 'driver', 'remarks']
         const data = this.formatJson(filterVal)
         excel.export_json_to_excel({
           header: tHeader,
