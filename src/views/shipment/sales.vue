@@ -207,6 +207,7 @@ export default {
       formLabelWidth: '100px',
       dialogFormVisible: false,
       templateloadLoading: false,
+      uploadLoading: false,
       tableData: [{
         date: '2016-05-02',
         name: '王小虎',
