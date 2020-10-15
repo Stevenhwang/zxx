@@ -1,11 +1,8 @@
 <template>
-  <div class="login-container">
+  <div class="login-container" :style="backgroundDiv">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
-      <div class="title-container">
-        <h3 class="title">登录页面</h3>
-      </div>
-
+      <div class="title-container" />
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -44,8 +41,8 @@
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
       <div class="tips">
-        <span style="margin-right:20px;">用户名: admin</span>
-        <span> 密码: any</span>
+        <span style="margin-right:20px;">用户名</span>
+        <span> 密码</span>
       </div>
 
     </el-form>
@@ -73,6 +70,10 @@ export default {
       }
     }
     return {
+      backgroundDiv: {
+        backgroundImage: 'url(' + require('@/assets/3.jpg') + ')',
+        backgroundRepeat: 'no-repeat'
+      },
       loginForm: {
         username: 'admin',
         password: '111111'
