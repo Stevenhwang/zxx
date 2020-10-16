@@ -62,6 +62,12 @@ export const constantRoutes = [
     meta: { title: '进货管理', icon: 'el-icon-shopping-cart-2' },
     children: [
       {
+        path: 'material',
+        name: 'material',
+        component: () => import('@/views/purchases/material'),
+        meta: { title: '材料类别', icon: 'el-icon-star-off' }
+      },
+      {
         path: 'pay',
         name: 'pay',
         component: () => import('@/views/purchases/pay'),
@@ -82,6 +88,12 @@ export const constantRoutes = [
     name: 'shipment',
     meta: { title: '出货管理', icon: 'el-icon-sold-out' },
     children: [
+      {
+        path: 'product',
+        name: 'product',
+        component: () => import('@/views/shipment/product'),
+        meta: { title: '产品类别', icon: 'el-icon-star-on' }
+      },
       {
         path: 'sales',
         name: 'sales',
