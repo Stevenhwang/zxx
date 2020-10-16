@@ -4,14 +4,14 @@
     <breadcrumb class="breadcrumb-container" />
     <!-- 修改密码弹框 -->
     <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="35%">
-      <el-form :model="form">
-        <el-form-item label="原始密码:">
+      <el-form ref="form" :model="form" :rules="formRules">
+        <el-form-item label="原始密码:" prop="originalpass">
           <el-input v-model="form.originalpass" type="password" placeholder="请输入原始密码" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="新密码:">
+        <el-form-item label="新密码:" prop="pass">
           <el-input v-model="form.pass" type="password" placeholder="请输入新密码" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="确认密码:">
+        <el-form-item label="确认密码:" prop="checkpass">
           <el-input v-model="form.checkpass" type="password" placeholder="请再次输入密码" autocomplete="off" />
         </el-form-item>
       </el-form>
@@ -55,11 +55,21 @@ export default {
     Hamburger
   },
   data() {
+    const validateCheckPass = (rule, value, callback) => {
+      if (value !== this.form.pass) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
       form: {
         pass: '',
         checkpass: '',
         originalpass: ''
+      },
+      formRules: {
+        checkpass: [{ trigger: 'blur', validator: validateCheckPass }]
       },
       dialogFormVisible: false
     }
