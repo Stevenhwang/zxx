@@ -1,9 +1,26 @@
 <template>
   <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
     <breadcrumb class="breadcrumb-container" />
-
+    <!-- 修改密码弹框 -->
+    <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="35%">
+      <el-form :model="form">
+        <el-form-item label="原始密码:">
+          <el-input v-model="form.originalpass" type="password" placeholder="请输入原始密码" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="新密码:">
+          <el-input v-model="form.pass" type="password" placeholder="请输入新密码" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="确认密码:">
+          <el-input v-model="form.checkpass" type="password" placeholder="请再次输入密码" autocomplete="off" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 修改密码框 -->
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
@@ -15,14 +32,13 @@
             <el-dropdown-item>
               首页
             </el-dropdown-item>
-          </router-link>
-          <el-dropdown-item divided @click.native="changePassword">
-            <span style="display:block;">修改密码</span>
-          </el-dropdown-item>
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">退出</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
+            <el-dropdown-item divided @click.native="changePassword">
+              <span style="display:block;">修改密码</span>
+            </el-dropdown-item>
+            <el-dropdown-item divided @click.native="logout">
+              <span style="display:block;">退出</span>
+            </el-dropdown-item>
+          </router-link></el-dropdown-menu>
       </el-dropdown>
     </div>
   </div>
@@ -38,6 +54,16 @@ export default {
     Breadcrumb,
     Hamburger
   },
+  data() {
+    return {
+      form: {
+        pass: '',
+        checkpass: '',
+        originalpass: ''
+      },
+      dialogFormVisible: false
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar',
@@ -45,6 +71,14 @@ export default {
     ])
   },
   methods: {
+    resetForm() {
+      this.form = {
+        pass: '',
+        originalpass: '',
+        checkpass: ''
+
+      }
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
@@ -53,7 +87,8 @@ export default {
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
     changePassword() {
-
+      this.resetForm()
+      this.dialogFormVisible = true
     }
   }
 }
