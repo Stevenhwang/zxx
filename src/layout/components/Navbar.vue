@@ -32,13 +32,14 @@
             <el-dropdown-item>
               首页
             </el-dropdown-item>
-            <el-dropdown-item divided @click.native="changePassword">
-              <span style="display:block;">修改密码</span>
-            </el-dropdown-item>
-            <el-dropdown-item divided @click.native="logout">
-              <span style="display:block;">退出</span>
-            </el-dropdown-item>
-          </router-link></el-dropdown-menu>
+          </router-link>
+          <el-dropdown-item divided @click.native="changePassword">
+            <span style="display:block;">修改密码</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided @click.native="logout">
+            <span style="display:block;">退出</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
       </el-dropdown>
     </div>
   </div>
