@@ -14,7 +14,7 @@
     <el-header>
       <el-input
         v-model="input"
-        style="width:350px;"
+        style="width:400px;"
         clearable
         placeholder="请输入搜索内容"
       />
