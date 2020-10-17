@@ -73,7 +73,7 @@
       <el-input
         v-if="!isDate"
         v-model="input"
-        style="width:300px;"
+        style="width:350px;"
         placeholder="请输入搜索内容"
         clearable
       />
