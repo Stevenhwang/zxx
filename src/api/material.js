@@ -7,3 +7,10 @@ export function getMaterialTypes(params) {
     params: params
   })
 }
+
+export function deleteMaterialType(id) {
+  return request({
+    url: `/materialTypes/${id}`,
+    method: 'delete'
+  })
+}

@@ -37,17 +37,22 @@
         <el-table-column
           prop="id"
           label="ID"
-          width="150"
         />
         <el-table-column
           prop="name"
           label="材料类别"
-          width="400px"
+        />
+        <el-table-column
+          prop="createdAt"
+          label="创建时间"
+        />
+        <el-table-column
+          prop="updatedAt"
+          label="更新时间"
         />
         <el-table-column
           fixed="right"
           label="操作"
-          width="300"
         >
           <template slot-scope="{row,$index}">
             <el-button type="primary" icon="el-icon-edit" size="mini" circle @click="handleUpdate(row)" />
@@ -67,8 +72,9 @@
   </el-container>
 </template>
 <script>
-import { getMaterialTypes } from '@/api/material'
+import { getMaterialTypes, deleteMaterialType } from '@/api/material'
 import Pagination from '@/components/Pagination'
+import { parseTime } from '@/utils'
 
 export default {
   components: { Pagination },
@@ -95,10 +101,19 @@ export default {
   },
 
   methods: {
+    transDate(listData) {
+      const result = []
+      listData.forEach(data => {
+        data.createdAt = parseTime(new Date(data.createdAt))
+        data.updatedAt = parseTime(new Date(data.updatedAt))
+        result.push(data)
+      })
+      return result
+    },
     getList() {
       this.listLoading = true
       getMaterialTypes(this.listQuery).then(response => {
-        this.tableData = JSON.parse(response.data)
+        this.tableData = this.transDate(JSON.parse(response.data))
         this.total = response.total
         setTimeout(() => {
           this.listLoading = false
@@ -115,7 +130,7 @@ export default {
     handleFilter() {
       this.listLoading = true
       getMaterialTypes(this.listQuery).then(response => {
-        this.tableData = JSON.parse(response.data)
+        this.tableData = this.transDate(JSON.parse(response.data))
         this.total = response.total
         setTimeout(() => {
           this.listLoading = false
@@ -143,7 +158,12 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.tableData.splice(index, 1)
+        deleteMaterialType(row.id).then(response => {
+          this.getList()
+          setTimeout(() => {
+            this.listLoading = false
+          }, 1.5 * 1000)
+        })
         this.$message({
           type: 'success',
           message: '删除成功!'
