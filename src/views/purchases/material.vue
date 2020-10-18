@@ -13,7 +13,7 @@
     </el-dialog>
     <el-header>
       <el-input
-        v-model="input"
+        v-model="listQuery.search"
         style="width:400px;"
         clearable
         placeholder="请输入搜索内容"
@@ -78,14 +78,14 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 20
+        limit: 20,
+        search: ''
       },
       form: {
         name: ''
       },
       dialogFormVisible: false,
       formLabelWidth: '100px',
-      input: '',
       tableData: []
     }
   },
@@ -112,7 +112,16 @@ export default {
       })
       this.dialogFormVisible = false
     },
-    handleFilter() {},
+    handleFilter() {
+      this.listLoading = true
+      getMaterialTypes(this.listQuery).then(response => {
+        this.tableData = JSON.parse(response.data)
+        this.total = response.total
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      })
+    },
     resetForm() {
       this.form = {
         name: '' }
