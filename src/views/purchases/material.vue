@@ -1,14 +1,14 @@
 <template>
   <el-container>
-    <el-dialog title="新增类别" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="材料类别" :label-width="formLabelWidth">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <el-form ref="form" :model="form" :rules="rules">
+        <el-form-item label="材料类别" :label-width="formLabelWidth" prop="name">
           <el-input v-model="form.name" autocomplete="off" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="modify">确 定</el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">确 定</el-button>
       </div>
     </el-dialog>
     <el-header>
@@ -24,7 +24,7 @@
       <el-button
         type="primary"
         icon="el-icon-edit"
-        @click="handleCreate()"
+        @click="handleCreate"
       >新增类别
       </el-button>
     </el-header>
@@ -72,7 +72,7 @@
   </el-container>
 </template>
 <script>
-import { getMaterialTypes, deleteMaterialType } from '@/api/material'
+import { getMaterialTypes, deleteMaterialType, createMaterialType, updateMaterialType } from '@/api/material'
 import Pagination from '@/components/Pagination'
 import { parseTime } from '@/utils'
 
@@ -80,6 +80,14 @@ export default {
   components: { Pagination },
   data() {
     return {
+      rules: {
+        name: [{ required: true, message: '材料类别不能为空！', trigger: 'blur' }]
+      },
+      dialogStatus: '',
+      textMap: {
+        update: '更新类别',
+        create: '新增类别'
+      },
       total: 0,
       listLoading: true,
       listQuery: {
@@ -88,6 +96,7 @@ export default {
         search: ''
       },
       form: {
+        id: '',
         name: ''
       },
       dialogFormVisible: false,
@@ -120,13 +129,6 @@ export default {
         }, 1.5 * 1000)
       })
     },
-    modify() {
-      this.$message({
-        message: '提交成功',
-        type: 'success'
-      })
-      this.dialogFormVisible = false
-    },
     handleFilter() {
       this.listLoading = true
       getMaterialTypes(this.listQuery).then(response => {
@@ -139,18 +141,55 @@ export default {
     },
     resetForm() {
       this.form = {
-        name: '' }
+        id: '',
+        name: ''
+      }
     },
     handleCreate() {
       this.resetForm()
-      this.dialogStatus = '新增类别'
+      this.dialogStatus = 'create'
       this.dialogFormVisible = true
+      this.listLoading = true
+      this.$nextTick(() => {
+        this.$refs['form'].clearValidate()
+      })
+    },
+    createData() {
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          createMaterialType(this.form).then(() => {
+            this.getList()
+            this.dialogFormVisible = false
+            this.$message({
+              type: 'success',
+              message: '操作成功!'
+            })
+          }).catch()
+        }
+      })
     },
     handleUpdate(row) {
-      this.form = Object.assign({}, row) // copy obj
-      this.form.timestamp = new Date(this.form.date)
+      this.form = Object.assign({}, row)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['form'].clearValidate()
+      })
+    },
+    updateData() {
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          const tempData = Object.assign({}, this.form)
+          updateMaterialType(tempData.id, tempData).then(() => {
+            this.getList()
+            this.dialogFormVisible = false
+            this.$message({
+              type: 'success',
+              message: '操作成功!'
+            })
+          }).catch()
+        }
+      })
     },
     handleDelete(row, index) {
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
