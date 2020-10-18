@@ -5,14 +5,14 @@
     <!-- 修改密码弹框 -->
     <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="35%">
       <el-form ref="form" :model="form" :rules="formRules">
-        <el-form-item label="原始密码:" prop="originalpass">
-          <el-input v-model="form.originalpass" type="password" placeholder="请输入原始密码" autocomplete="off" />
+        <el-form-item label="原始密码:" prop="originalPass">
+          <el-input v-model="form.originalPass" type="password" placeholder="请输入原始密码" autocomplete="off" />
         </el-form-item>
         <el-form-item label="新密码:" prop="pass">
           <el-input v-model="form.pass" type="password" placeholder="请输入新密码" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="确认密码:" prop="checkpass">
-          <el-input v-model="form.checkpass" type="password" placeholder="请再次输入密码" autocomplete="off" />
+        <el-form-item label="确认密码:" prop="checkPass">
+          <el-input v-model="form.checkPass" type="password" placeholder="请再次输入密码" autocomplete="off" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -49,6 +49,7 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import { resetPassword } from '@/api/user'
 
 export default {
   components: {
@@ -56,7 +57,7 @@ export default {
     Hamburger
   },
   data() {
-    const validateCheckPass = (rule, value, callback) => {
+    const validatecheckPass = (rule, value, callback) => {
       if (value !== this.form.pass) {
         callback(new Error('两次输入密码不一致!'))
       } else {
@@ -66,11 +67,11 @@ export default {
     return {
       form: {
         pass: '',
-        checkpass: '',
-        originalpass: ''
+        checkPass: '',
+        originalPass: ''
       },
       formRules: {
-        checkpass: [{ trigger: 'blur', validator: validateCheckPass }]
+        checkPass: [{ trigger: 'blur', validator: validatecheckPass }]
       },
       dialogFormVisible: false
     }
@@ -83,17 +84,32 @@ export default {
   },
   methods: {
     modify() {
-      this.$message({
-        message: '修改成功',
-        type: 'success'
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          resetPassword(this.form).then(response => {
+            const data = response
+            this.$message({
+              message: data.msg,
+              type: 'success'
+            })
+            this.dialogFormVisible = false
+          })
+            .catch(error => {
+              console.log(error)
+            })
+        } else {
+          this.$message({
+            message: '两次输入密码不一致!',
+            type: 'failed'
+          })
+        }
       })
-      this.dialogFormVisible = false
     },
     resetForm() {
       this.form = {
         pass: '',
-        originalpass: '',
-        checkpass: ''
+        originalPass: '',
+        checkPass: ''
 
       }
     },

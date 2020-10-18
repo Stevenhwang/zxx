@@ -22,3 +22,11 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function resetPassword(data) {
+  return request({
+    url: '/resetPassword',
+    method: 'post',
+    data
+  })
+}
