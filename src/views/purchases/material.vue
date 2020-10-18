@@ -28,56 +28,83 @@
       >新增类别
       </el-button>
     </el-header>
-    <el-main><el-table
-      :data="tableData"
-      style="width: 100%"
-    >
-      <el-table-column
-        type="index"
-        width="150"
-      />
-      <el-table-column
-        prop="name"
-        label="材料类别"
-        width="400px"
-      />
-      <el-table-column
-        fixed="right"
-        label="操作"
-        width="300"
+    <el-main>
+      <el-table
+        v-loading="listLoading"
+        :data="tableData"
+        style="width: 100%"
       >
-        <template slot-scope="{row,$index}">
-          <el-button type="primary" icon="el-icon-edit" size="mini" circle @click="handleUpdate(row)" />
-          <el-button type="danger" icon="el-icon-delete" size="mini" circle @click="handleDelete(row,$index)" />
-        </template>
-      </el-table-column>
-    </el-table></el-main>
-    <el-footer><el-pagination
-      background
-      layout="prev, pager, next"
-      :total="1000"
-    /></el-footer>
+        <el-table-column
+          prop="id"
+          label="ID"
+          width="150"
+        />
+        <el-table-column
+          prop="name"
+          label="材料类别"
+          width="400px"
+        />
+        <el-table-column
+          fixed="right"
+          label="操作"
+          width="300"
+        >
+          <template slot-scope="{row,$index}">
+            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click="handleUpdate(row)" />
+            <el-button type="danger" icon="el-icon-delete" size="mini" circle @click="handleDelete(row,$index)" />
+          </template>
+        </el-table-column>
+      </el-table></el-main>
+    <el-footer>
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="listQuery.page"
+        :limit.sync="listQuery.limit"
+        @pagination="getList"
+      />
+    </el-footer>
   </el-container>
 </template>
 <script>
+import { getMaterialTypes } from '@/api/material'
+import Pagination from '@/components/Pagination'
+
 export default {
+  components: { Pagination },
   data() {
     return {
+      total: 0,
+      listLoading: true,
+      listQuery: {
+        page: 1,
+        limit: 20
+      },
       form: {
         name: ''
       },
       dialogFormVisible: false,
       formLabelWidth: '100px',
       input: '',
-      tableData: [{
-        name: '木头'
-      }, {
-        name: '金属'
-      }]
+      tableData: []
     }
   },
 
+  created() {
+    this.getList()
+  },
+
   methods: {
+    getList() {
+      this.listLoading = true
+      getMaterialTypes(this.listQuery).then(response => {
+        this.tableData = JSON.parse(response.data)
+        this.total = response.total
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      })
+    },
     modify() {
       this.$message({
         message: '提交成功',
