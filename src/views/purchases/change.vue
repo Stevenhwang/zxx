@@ -9,7 +9,14 @@
           <el-input v-model="form.address" autocomplete="off" />
         </el-form-item>
         <el-form-item label="材料名称" :label-width="formLabelWidth">
-          <el-input v-model="form.deatil" autocomplete="off" />
+          <el-select v-model="form.detail" clearable placeholder="请选择">
+            <el-option
+              v-for="item in selectList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.name"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="单据编号" :label-width="formLabelWidth">
           <el-input v-model="form.docnum" autocomplete="off" />
@@ -166,17 +173,17 @@ export default {
         value: 'date',
         label: '日期'
       }, {
-        value: 'person',
+        value: 'name',
         label: '联系人'
       }, {
-        value: 'supply',
+        value: 'address',
         label: '供应单位'
       },
       {
         value: 'docnum',
         label: '单据编号'
       }, {
-        value: 'material',
+        value: 'deatil',
         label: '材料名称'
       }],
       value: '',

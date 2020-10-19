@@ -166,7 +166,7 @@ export default {
         value: 'date',
         label: '日期'
       }, {
-        value: 'person',
+        value: 'name',
         label: '联系人'
       },
       {

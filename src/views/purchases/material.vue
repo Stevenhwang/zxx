@@ -59,7 +59,8 @@
             <el-button type="danger" icon="el-icon-delete" size="mini" circle @click="handleDelete(row,$index)" />
           </template>
         </el-table-column>
-      </el-table></el-main>
+      </el-table>
+    </el-main>
     <el-footer>
       <pagination
         v-show="total>0"
