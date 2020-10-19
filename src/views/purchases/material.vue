@@ -79,9 +79,16 @@ import { parseTime } from '@/utils'
 export default {
   components: { Pagination },
   data() {
+    const validateData = (rule, value, callback) => {
+      if (value.trim().length < 1) {
+        callback(new Error('材料类别不能为空！'))
+      } else {
+        callback()
+      }
+    }
     return {
       rules: {
-        name: [{ required: true, message: '材料类别不能为空！', trigger: 'blur' }]
+        name: [{ required: true, message: '材料类别不能为空！', trigger: 'blur', validator: validateData }]
       },
       dialogStatus: '',
       textMap: {
@@ -149,7 +156,6 @@ export default {
       this.resetForm()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
-      this.listLoading = true
       this.$nextTick(() => {
         this.$refs['form'].clearValidate()
       })
