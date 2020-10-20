@@ -30,9 +30,6 @@
         <el-form-item label="单位" :label-width="formLabelWidth">
           <el-input v-model="form.unit" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="金额" :label-width="formLabelWidth">
-          <el-input v-model="form.amount" autocomplete="off" />
-        </el-form-item>
         <el-form-item label="备注" :label-width="formLabelWidth">
           <el-input v-model="form.remarks" autocomplete="off" />
         </el-form-item>
@@ -157,7 +154,8 @@
             <el-button type="danger" icon="el-icon-delete" size="mini" circle @click="handleDelete(row,$index)" />
           </template>
         </el-table-column>
-      </el-table></el-main>
+      </el-table>
+    </el-main>
     <el-footer>
       <pagination
         v-show="total>0"
@@ -222,7 +220,6 @@ export default {
         name: '',
         address: '',
         detail: '',
-        amount: '',
         date: '',
         remarks: '',
         unit: '',
@@ -314,7 +311,6 @@ export default {
         name: '',
         address: '',
         detail: '',
-        amount: '',
         date: '',
         remarks: '',
         unit: '',
