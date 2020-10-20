@@ -21,10 +21,10 @@
         <el-form-item label="单据编号" :label-width="formLabelWidth">
           <el-input v-model="form.docnum" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="单价" :label-width="formLabelWidth">
+        <el-form-item label="单价" :label-width="formLabelWidth" prop="price">
           <el-input v-model="form.price" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="数量" :label-width="formLabelWidth">
+        <el-form-item label="数量" :label-width="formLabelWidth" prop="quantity">
           <el-input v-model="form.quantity" autocomplete="off" />
         </el-form-item>
         <el-form-item label="单位" :label-width="formLabelWidth">
@@ -177,9 +177,18 @@ import { getMaterialTypes } from '@/api/material'
 export default {
   components: { Pagination },
   data() {
+    const validateData = (rule, value, callback) => {
+      if (isNaN(value)) {
+        callback(new Error('请输入数字！'))
+      } else {
+        callback()
+      }
+    }
     return {
       total: 0,
       rules: {
+        price: [{ message: '请输入数字！', trigger: 'blur', validator: validateData }],
+        quantity: [{ message: '请输入数字！', trigger: 'blur', validator: validateData }]
       },
       selectList: [],
       listQuery: {
