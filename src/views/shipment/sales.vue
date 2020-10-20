@@ -205,7 +205,7 @@ export default {
         searchKey: '',
         searchValue: ''
       },
-      tHeader: ['日期', '联系人', '供应单位', '产品名称', '单据编号', '材料名称', '单价', '数量', '单位', '金额', '备注'],
+      tHeader: ['日期', '联系人', '项目名称', '产品名称', '单据编号', '单价', '数量', '单位', '金额', '备注'],
       isDate: false,
       options: [{
         value: 'date',
@@ -389,7 +389,7 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true
-      const filterVal = ['date', 'name', 'project', 'docnum', 'product', 'price', 'quantity', 'unit', 'amount', 'remarks']
+      const filterVal = ['date', 'name', 'project', 'product', 'docnum', 'price', 'quantity', 'unit', 'amount', 'remarks']
       const data = this.formatJson(filterVal)
       export_json_to_excel({
         header: this.tHeader,

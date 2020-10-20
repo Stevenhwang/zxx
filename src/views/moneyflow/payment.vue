@@ -342,7 +342,7 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true
-      const filterVal = ['date', 'name', 'project', 'paid', 'balance', 'unit', 'amount', 'remarks']
+      const filterVal = ['date', 'name', 'product', 'paid', 'balance', 'unit', 'amount', 'remarks']
       const data = this.formatJson(filterVal)
       export_json_to_excel({
         header: this.tHeader,
