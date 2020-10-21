@@ -26,9 +26,6 @@
         <el-form-item label="已收发票金额" :label-width="formLabelWidth">
           <el-input v-model="form.completed" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="未收发票金额" :label-width="formLabelWidth">
-          <el-input v-model="form.nodone" autocomplete="off" />
-        </el-form-item>
         <el-form-item label="已冲抵发票金额" :label-width="formLabelWidth">
           <el-input v-model="form.deduction" autocomplete="off" />
         </el-form-item>
@@ -117,7 +114,6 @@
         prop="unit"
         label="单位"
       />
-
       <el-table-column
         prop="should"
         label="应收发票金额"
@@ -179,17 +175,17 @@ export default {
         label: '日期'
       },
       {
-        value: 'num',
+        value: 'number',
         label: '票号'
       },
       {
-        value: 'goods',
+        value: 'porduct',
         label: '货品名称'
       }, {
-        value: 'name',
+        value: 'person',
         label: '联系人'
       }, {
-        value: 'person',
+        value: 'name',
         label: '经办人'
       }],
       value: '',
@@ -201,35 +197,22 @@ export default {
         create: '新增信息'
       },
       form: {
-        name: '',
-        project: '',
-        punit: '',
-        collect: '',
-        amount: '',
         date: '',
-        remarks: '',
+        number: '',
+        product: '',
+        quantity: '',
         unit: '',
-        balance: ''
+        should: '',
+        completed: '',
+        nodone: '',
+        deduction: '',
+        person: '',
+        name: '',
+        remarks: ''
       },
       formLabelWidth: '100px',
       dialogFormVisible: false,
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
+      tableData: []
     }
   },
 
@@ -262,15 +245,18 @@ export default {
     },
     resetForm() {
       this.form = {
-        name: '',
-        project: '',
-        balance: '',
-        collect: '',
-        amount: '',
         date: '',
-        remarks: '',
+        number: '',
+        product: '',
+        quantity: '',
         unit: '',
-        punit: ''
+        should: '',
+        completed: '',
+        nodone: '',
+        deduction: '',
+        person: '',
+        name: '',
+        remarks: ''
       }
     },
     handleCreate() {
