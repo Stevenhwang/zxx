@@ -90,10 +90,10 @@ export default {
           }
         },
         legend: {
-          data: ['进货量', '出货量']
+          data: ['付款', '收款']
         },
         series: [{
-          name: '进货量', itemStyle: {
+          name: '付款', itemStyle: {
             normal: {
               color: '#FF005A',
               lineStyle: {
@@ -109,7 +109,7 @@ export default {
           animationEasing: 'cubicInOut'
         },
         {
-          name: '出货量',
+          name: '收款',
           smooth: true,
           type: 'line',
           itemStyle: {

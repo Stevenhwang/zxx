@@ -235,7 +235,7 @@ export default {
         label: '公司名称'
       },
       {
-        value: 'porject',
+        value: 'project',
         label: '项目名称'
       }, {
         value: 'product',
