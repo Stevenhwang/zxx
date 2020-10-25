@@ -7,9 +7,10 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            销售
+            进货管理
           </div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
+          原材料<count-to :start-val="0" :end-val="panelData.purchases.pay" :duration="2600" class="card-panel-num" /><br>
+          退换货<count-to :start-val="0" :end-val="panelData.purchases.change" :duration="2600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -20,9 +21,10 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            原材料
+            出货管理
           </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
+          销售额<count-to :start-val="0" :end-val="panelData.shipment.sales" :duration="3000" class="card-panel-num" /><br>
+          退换货<count-to :start-val="0" :end-val="panelData.shipment.return" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -33,9 +35,10 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            付款
+            钱流管理
           </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
+          付款额<count-to :start-val="0" :end-val="panelData.moneyflow.payment" :duration="3200" class="card-panel-num" /><br>
+          收款额<count-to :start-val="0" :end-val="panelData.moneyflow.respay" :duration="3200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -46,9 +49,10 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            收款
+            票据管理
           </div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />
+          销项票<count-to :start-val="0" :end-val="panelData.invoice.cancellation" :duration="3600" class="card-panel-num" /><br>
+          进项票<count-to :start-val="0" :end-val="panelData.invoice.entryticket" :duration="3600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -62,6 +66,12 @@ export default {
   components: {
     CountTo
   },
+  props: {
+    panelData: {
+      type: Object,
+      required: true
+    }
+  },
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
@@ -72,14 +82,14 @@ export default {
 
 <style lang="scss" scoped>
 .panel-group {
-  margin-top: 18px;
+  margin-top: 2px;
 
   .card-panel-col {
     margin-bottom: 32px;
   }
 
   .card-panel {
-    height: 108px;
+    height: 112px;
     cursor: pointer;
     font-size: 12px;
     position: relative;

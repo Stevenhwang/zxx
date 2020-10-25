@@ -61,10 +61,35 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
       this.setOptions(this.chartData)
     },
+    getDate(day) {
+      const today = new Date()
+      const targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day
+      today.setTime(targetday_milliseconds)
+      const tYear = today.getFullYear()
+      let tMonth = today.getMonth()
+      let tDate = today.getDate()
+      tMonth = this.doHandleMonth(tMonth + 1)
+      tDate = this.doHandleMonth(tDate)
+      return tYear + '-' + tMonth + '-' + tDate
+    },
+    doHandleMonth(month) {
+      let m = month
+      if (month.toString().length === 1) {
+        m = '0' + month
+      }
+      return m
+    },
     setOptions({ expectedData, actualData } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: [
+            this.getDate(-6),
+            this.getDate(-5),
+            this.getDate(-4),
+            this.getDate(-3),
+            this.getDate(-2),
+            this.getDate(-1),
+            '今日'],
           boundaryGap: false,
           axisTick: {
             show: false
@@ -90,10 +115,10 @@ export default {
           }
         },
         legend: {
-          data: ['付款', '收款']
+          data: [expectedData.name, actualData.name]
         },
         series: [{
-          name: '付款', itemStyle: {
+          name: expectedData.name, itemStyle: {
             normal: {
               color: '#FF005A',
               lineStyle: {
@@ -104,12 +129,12 @@ export default {
           },
           smooth: true,
           type: 'line',
-          data: expectedData,
+          data: expectedData.data,
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
         },
         {
-          name: '收款',
+          name: actualData.name,
           smooth: true,
           type: 'line',
           itemStyle: {
@@ -124,7 +149,7 @@ export default {
               }
             }
           },
-          data: actualData,
+          data: actualData.data,
           animationDuration: 2800,
           animationEasing: 'quadraticOut'
         }]

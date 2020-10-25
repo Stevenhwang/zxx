@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-editor-container">
     <github-corner class="github-corner" />
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
+    <panel-group :panel-data="panelData" @handleSetLineChartData="handleSetLineChartData" />
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <line-chart :chart-data="lineChartData" />
     </el-row>
@@ -14,20 +14,44 @@ import PanelGroup from './components/PanelGroup'
 import LineChart from './components/LineChart'
 const lineChartData = {
   newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
+    expectedData: {
+      name: '原材料',
+      data: [100, 120, 161, 134, 105, 160, 165]
+    },
+    actualData: {
+      name: '退换货',
+      data: [120, 82, 91, 154, 162, 140, 145]
+    }
   },
   messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
+    expectedData: {
+      name: '销售额',
+      data: [200, 192, 120, 144, 160, 130, 140]
+    },
+    actualData: {
+      name: '退换货',
+      data: [180, 160, 151, 106, 145, 150, 130]
+    }
   },
   purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
+    expectedData: {
+      name: '付款额',
+      data: [80, 100, 121, 104, 105, 90, 100]
+    },
+    actualData: {
+      name: '收款额',
+      data: [120, 90, 100, 138, 142, 130, 130]
+    }
   },
   shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
+    expectedData: {
+      name: '销项票',
+      data: [130, 140, 141, 142, 145, 150, 160]
+    },
+    actualData: {
+      name: '进项票',
+      data: [120, 82, 91, 154, 162, 140, 130]
+    }
   }
 }
 export default {
@@ -37,10 +61,27 @@ export default {
     PanelGroup,
     LineChart
   },
-
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      lineChartData: lineChartData.newVisitis,
+      panelData: {
+        purchases: {
+          pay: 1200,
+          change: 1200
+        },
+        shipment: {
+          sales: 2000,
+          return: 2200
+        },
+        moneyflow: {
+          payment: 2100,
+          respay: 1800
+        },
+        invoice: {
+          cancellation: 3300,
+          entryticket: 1000
+        }
+      }
     }
   },
   methods: {
