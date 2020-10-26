@@ -9,8 +9,8 @@
           <div class="card-panel-text">
             进货管理
           </div>
-          原材料<count-to :start-val="0" :end-val="panelData.purchases.pay" :duration="2600" class="card-panel-num" /><br>
-          退换货<count-to :start-val="0" :end-val="panelData.purchases.change" :duration="2600" class="card-panel-num" />
+          原材料<count-to :start-val="0" :end-val="pay" :duration="2600" class="card-panel-num" /><br>
+          退换货<count-to :start-val="0" :end-val="change" :duration="2600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -23,8 +23,8 @@
           <div class="card-panel-text">
             出货管理
           </div>
-          销售额<count-to :start-val="0" :end-val="panelData.shipment.sales" :duration="3000" class="card-panel-num" /><br>
-          退换货<count-to :start-val="0" :end-val="panelData.shipment.return" :duration="3000" class="card-panel-num" />
+          销售额<count-to :start-val="0" :end-val="sales" :duration="3000" class="card-panel-num" /><br>
+          退换货<count-to :start-val="0" :end-val="returns" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -37,8 +37,8 @@
           <div class="card-panel-text">
             钱流管理
           </div>
-          付款额<count-to :start-val="0" :end-val="panelData.moneyflow.payment" :duration="3200" class="card-panel-num" /><br>
-          收款额<count-to :start-val="0" :end-val="panelData.moneyflow.respay" :duration="3200" class="card-panel-num" />
+          付款额<count-to :start-val="0" :end-val="payment" :duration="3200" class="card-panel-num" /><br>
+          收款额<count-to :start-val="0" :end-val="respay" :duration="3200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -51,8 +51,8 @@
           <div class="card-panel-text">
             票据管理
           </div>
-          销项票<count-to :start-val="0" :end-val="panelData.invoice.cancellation" :duration="3600" class="card-panel-num" /><br>
-          进项票<count-to :start-val="0" :end-val="panelData.invoice.entryticket" :duration="3600" class="card-panel-num" />
+          销项票<count-to :start-val="0" :end-val="cancellation" :duration="3600" class="card-panel-num" /><br>
+          进项票<count-to :start-val="0" :end-val="entryticket" :duration="3600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -67,8 +67,36 @@ export default {
     CountTo
   },
   props: {
-    panelData: {
-      type: Object,
+    pay: {
+      type: Number,
+      required: true
+    },
+    change: {
+      type: Number,
+      required: true
+    },
+    sales: {
+      type: Number,
+      required: true
+    },
+    returns: {
+      type: Number,
+      required: true
+    },
+    payment: {
+      type: Number,
+      required: true
+    },
+    respay: {
+      type: Number,
+      required: true
+    },
+    cancellation: {
+      type: Number,
+      required: true
+    },
+    entryticket: {
+      type: Number,
       required: true
     }
   },

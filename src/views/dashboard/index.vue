@@ -1,7 +1,17 @@
 <template>
   <div class="dashboard-editor-container">
     <github-corner class="github-corner" />
-    <panel-group :panel-data="panelData" @handleSetLineChartData="handleSetLineChartData" />
+    <panel-group
+      :pay="pay"
+      :change="change"
+      :sales="sales"
+      :returns="returns"
+      :payment="payment"
+      :respay="respay"
+      :cancellation="cancellation"
+      :entryticket="entryticket"
+      @handleSetLineChartData="handleSetLineChartData"
+    />
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <line-chart :chart-data="lineChartData" />
     </el-row>
@@ -12,48 +22,8 @@
 import GithubCorner from '@/components/GithubCorner'
 import PanelGroup from './components/PanelGroup'
 import LineChart from './components/LineChart'
-const lineChartData = {
-  newVisitis: {
-    expectedData: {
-      name: '原材料',
-      data: [100, 120, 161, 134, 105, 160, 165]
-    },
-    actualData: {
-      name: '退换货',
-      data: [120, 82, 91, 154, 162, 140, 145]
-    }
-  },
-  messages: {
-    expectedData: {
-      name: '销售额',
-      data: [200, 192, 120, 144, 160, 130, 140]
-    },
-    actualData: {
-      name: '退换货',
-      data: [180, 160, 151, 106, 145, 150, 130]
-    }
-  },
-  purchases: {
-    expectedData: {
-      name: '付款额',
-      data: [80, 100, 121, 104, 105, 90, 100]
-    },
-    actualData: {
-      name: '收款额',
-      data: [120, 90, 100, 138, 142, 130, 130]
-    }
-  },
-  shoppings: {
-    expectedData: {
-      name: '销项票',
-      data: [130, 140, 141, 142, 145, 150, 160]
-    },
-    actualData: {
-      name: '进项票',
-      data: [120, 82, 91, 154, 162, 140, 130]
-    }
-  }
-}
+import { getDashboard } from '@/api/dashboard'
+
 export default {
   name: 'Dashboard',
   components: {
@@ -63,30 +33,48 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis,
-      panelData: {
-        purchases: {
-          pay: 1200,
-          change: 1200
+      rawData: {},
+      lineChartData: {
+        expectedData: {
+          name: '',
+          data: []
         },
-        shipment: {
-          sales: 2000,
-          return: 2200
-        },
-        moneyflow: {
-          payment: 2100,
-          respay: 1800
-        },
-        invoice: {
-          cancellation: 3300,
-          entryticket: 1000
+        actualData: {
+          name: '',
+          data: []
         }
-      }
+      },
+      pay: 0,
+      change: 0,
+      sales: 0,
+      returns: 0,
+      payment: 0,
+      respay: 0,
+      cancellation: 0,
+      entryticket: 0
     }
+  },
+  created() {
+    this.getData()
   },
   methods: {
     handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
+      this.lineChartData = this.rawData[type]
+    },
+    getData() {
+      getDashboard().then(response => {
+        this.rawData = response.lineChartData
+        this.lineChartData = this.rawData.newVisitis
+        const panelData = response.panelData
+        this.pay = panelData.purchases.pay
+        this.change = panelData.purchases.change
+        this.sales = panelData.shipment.sales
+        this.returns = panelData.shipment.return
+        this.payment = panelData.moneyflow.payment
+        this.respay = panelData.moneyflow.respay
+        this.cancellation = panelData.invoice.cancellation
+        this.entryticket = panelData.invoice.entryticket
+      })
     }
   }
 }
