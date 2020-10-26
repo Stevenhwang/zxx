@@ -1,7 +1,23 @@
 <template>
   <div class="login-container" :style="backgroundDiv">
+    <vue-particles
+      color="#ffffff"
+      :particle-opacity="0.7"
+      lines-color="#ffffff"
+      :particles-number="150"
+      shape-type="circle"
+      :particle-size="5"
+      :lines-width="2"
+      :line-linked="true"
+      :line-opacity="0.4"
+      :lines-distance="150"
+      :move-speed="3"
+      :hover-effect="true"
+      hover-mode="grab"
+      :click-effect="true"
+      click-mode="push"
+    />
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
       <div class="title-container" />
       <el-form-item prop="username">
         <span class="svg-container">
@@ -38,7 +54,12 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width:100%;position: relative;"
+        @click.native.prevent="handleLogin"
+      >登录</el-button>
 
       <!-- <div class="tips">
         <span style="margin-right:20px;">用户名</span>
@@ -71,8 +92,8 @@ export default {
     }
     return {
       backgroundDiv: {
-        backgroundImage: 'url(' + require('@/assets/3.jpg') + ')',
-        backgroundRepeat: 'no-repeat'
+        backgroundImage: 'url(' + require('@/assets/4.jpg') + ')',
+        backgroundRepeat: 'repeat'
       },
       loginForm: {
         username: 'admin',
@@ -140,6 +161,12 @@ $cursor: #fff;
   }
 }
 
+#particles-js{
+   width: 100%;
+   height: calc(100% - 100px);
+   position: absolute;
+ }
+
 /* reset element-ui css */
 .login-container {
   .el-input {
@@ -183,6 +210,8 @@ $light_gray:#eee;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
+  background-position-x:75% ;
+  background-position-y:78% ;
 
   .login-form {
     position: relative;

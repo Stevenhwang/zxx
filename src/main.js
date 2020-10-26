@@ -8,6 +8,8 @@ import locale from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
 
 import '@/styles/index.scss' // global css
 
+import VueParticles from 'vue-particles'
+
 import App from './App'
 import store from './store'
 import router from './router'
@@ -32,6 +34,7 @@ if (process.env.NODE_ENV === 'production') {
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
+Vue.use(VueParticles)
 
 Vue.config.productionTip = false
 
